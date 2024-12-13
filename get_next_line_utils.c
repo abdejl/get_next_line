@@ -14,60 +14,55 @@
 
 int ft_strlen(const char *str)
 {
-    int i;
-    i = 0;
+    int i = 0;
+    if (!str)
+        return (0);
     while (str[i])
-    {
         i++;
-    }
     return (i);
 }
 
+
 char *ft_strchr(const char *s, int c)
 {
-    int i;
+    int i = 0;
 
-    i = 0;
-    if (c == '\0')
-    {
-        return ((char *)(s + i));
-    }
+    if (!s)
+        return (NULL);
     while (s[i])
     {
         if ((unsigned char)s[i] == (unsigned char)c)
-		{
-			return ((char *)(s + i));
-		}
-		i++;
+            return ((char *)(s + i));
+        i++;
     }
+    if (c == '\0')
+        return ((char *)(s + i));
     return (NULL);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	int		i;
-	int		k;
-	char	*ptr;
 
-	if (s1 == NULL || s2 == NULL)
-	{
-		return (NULL);
-	}
-	i = 0;
-	ptr = malloc(ft_strlen(s1) + ft_strlen(s2) * sizeof(char) + 1);
-	if (ptr == NULL)
-		return (NULL);
-	while (i < ft_strlen(s1))
-	{
-		ptr[i] = s1[i];
-		i++;
-	}
-	k = 0;
-	while (k < ft_strlen(s2))
-	{
-		ptr[i + k] = s2[k];
-		k++;
-	}
-	ptr[i + k] = '\0';
-	return (ptr);
+char *ft_strjoin(char const *s1, char const *s2)
+{
+    char *ptr;
+    int i = 0;
+    int k = 0;
+    int len1 = ft_strlen(s1);
+    int len2 = ft_strlen(s2);
+
+    ptr = malloc((len1 + len2 + 1) * sizeof(char));
+    if (!ptr)
+        return (NULL);
+    while (i < len1)
+    {
+        ptr[i] = s1[i];
+        i++;
+    }
+    while (k < len2)
+    {
+        ptr[i + k] = s2[k];
+        k++;
+    }
+    ptr[i + k] = '\0';
+    return (ptr);
 }
+

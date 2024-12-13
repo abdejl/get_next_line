@@ -11,7 +11,9 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
+#ifndef BUFFER_SIZE
+#define BUFFER_SIZE 1024
+#endif
 char *ft_read(int fd, char *str)
 {
     char tmp_buff[BUFFER_SIZE + 1];
@@ -21,7 +23,7 @@ char *ft_read(int fd, char *str)
     num_of_bytes = read(fd, tmp_buff, BUFFER_SIZE);
     if (num_of_bytes < 0)
         return (NULL);
-    tmp_buff[num_of_bytes + 1] = '\0';
+    tmp_buff[num_of_bytes] = '\0';
     if (!str)
     {
         str = malloc(1);
@@ -38,16 +40,6 @@ char *ft_read(int fd, char *str)
     free(str);
     return (new_str);
 }
-int main()
-{
-    char *buff;
-    int fd = open("test.txt", O_CREAT);
-    if (fd < 0)
-        return (1);
-    printf("%s", buff);
-    free(buff);
-    close(fd);
-}
 
 char *ft_new_line(char *str)
 {
@@ -61,16 +53,13 @@ char *ft_new_line(char *str)
     if (!line)
         return (NULL);
     i = 0;
-    while (str[i] != '\n')
+    while (str[i] != '\n' && str[i])
     {
         line[i] = str[i];
         i++;
     }
     if (str[i] == '\n')
-    {
-        line[i] = '\n';
-    }
-    i++;
+        line[i++] = '\n';
     line[i] = '\0';
     return (line);
 }
@@ -78,33 +67,35 @@ char *ft_new_line(char *str)
 char *ft_remaining(char *str)
 {
     int i;
-    char *remaining;
     int j;
-    
+    char *remaining;
+
     i = 0;
     j = 0;
     while (str[i] != '\n' && str[i])
         i++;
     if (str[i] == '\0')
         return (NULL);
-    remaining = malloc(ft_strlen(str + i + 1) +1);
+    remaining = malloc(ft_strlen(str + i + 1) + 1);
     if (!remaining)
         return (NULL);
     i++;
     while (str[i])
     {
         remaining[j] = str[i];
-        i++;
         j++;
+        i++;
     }
     remaining[j] = '\0';
-    return(remaining);
+    return (remaining);
 }
 
 char *get_next_line(int fd)
 {
     static char *data_read = NULL; 
     char *line = NULL;
+    char *temp;
+
     if (fd < 0 || BUFFER_SIZE <= 0)
         return (NULL);
     data_read = ft_read(fd, data_read);
@@ -113,15 +104,38 @@ char *get_next_line(int fd)
     if (ft_strchr(data_read, '\n'))
     {
         line = ft_new_line(data_read);
+        temp = data_read;
         data_read = ft_remaining(data_read);
+        free(temp);
     }
     else if (*data_read)
     {
         line = data_read;
         data_read = NULL;
     }
+    else
+        free(data_read);
+        data_read = NULL;
     return (line);
 }
+
+// int main()
+// {
+//     char *buff;
+//     int fd = open("test.txt", O_RDONLY);
+//     if (fd < 0)
+//         return (1);
+
+//     while ((buff = get_next_line(fd)) != NULL)
+//     {
+//         printf("%s", buff);
+//         free(buff);
+//     }
+
+//     close(fd);
+//     return (0);
+// }
+
 // int main()
 // {
 //     char str[] = "hellooo\njgflkjjhg\nskldjks\n1234";
