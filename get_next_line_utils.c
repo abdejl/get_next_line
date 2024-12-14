@@ -6,7 +6,7 @@
 /*   By: abjellal <abjellal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 10:02:23 by abjellal          #+#    #+#             */
-/*   Updated: 2024/12/11 12:22:43 by abjellal         ###   ########.fr       */
+/*   Updated: 2024/12/14 09:44:49 by abjellal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,3 +66,24 @@ char *ft_strjoin(char const *s1, char const *s2)
     return (ptr);
 }
 
+char	*ft_strdup(const char *s)
+{
+	char	*str;
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (s[i])
+		i++;
+	str = (char *)malloc(i + 1);
+	if (!str)
+		return (NULL);
+	j = 0;
+	while (s[j])
+	{
+		str[j] = s[j];
+		j++;
+	}
+	str[j] = '\0';
+	return (str);
+}
