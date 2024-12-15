@@ -6,20 +6,20 @@
 /*   By: abjellal <abjellal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 10:02:15 by abjellal          #+#    #+#             */
-/*   Updated: 2024/12/14 10:56:43 by abjellal         ###   ########.fr       */
+/*   Updated: 2024/12/15 21:00:10 by abjellal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #ifndef BUFFER_SIZE
-#define BUFFER_SIZE 10
+#define BUFFER_SIZE 42
 #endif
 char *ft_read(int fd, char *str)
 {
     char tmp_buff[BUFFER_SIZE + 1];
     int num_of_bytes;
     char *new_str;
-
+    
     num_of_bytes = read(fd, tmp_buff, BUFFER_SIZE);
     if (num_of_bytes < 0)
         return (NULL);
@@ -30,17 +30,7 @@ char *ft_read(int fd, char *str)
     free(str);
     return (new_str);
 }
-// int main()
-// {
-//     char *buff = NULL;
-//     int fd = open("test.txt", O_RDONLY);
-//     buff = ft_read(fd, buff);
-//     printf("%s", buff);
-//     free(buff);
-//     close(fd);
 
-//     return 0;
-// }
 
 char *ft_new_line(char *str)
 {
@@ -92,32 +82,31 @@ char *ft_remaining(char *str)
 
 char *get_next_line(int fd)
 {
-    static char *data_read;
-    char *line;
+    static char *data;
+    char *line = NULL;
     char *temp;
 
-    line = NULL;
-    if (fd < 0 || BUFFER_SIZE <= 0) 
+    if (fd < 0 || BUFFER_SIZE <= 0)
         return (NULL);
-    data_read = ft_read(fd, data_read);
-    if (!data_read) 
-        return (NULL);
-    if (ft_strchr(data_read, '\n'))
+    data = ft_read(fd, data);
+    if (!data || !*data)
     {
-        line = ft_new_line(data_read); 
-        temp = data_read;
-        data_read = ft_remaining(data_read);
-        free(temp); 
+        free(data);
+        data = NULL;
+        return (NULL);
     }
-    else if (*data_read)
+    if (ft_strchr(data, '\n'))
     {
-        line = data_read;
-        data_read = NULL;
+        line = ft_new_line(data);
+        temp = data;
+        data = ft_remaining(data);
+        free(temp);
     }
     else
     {
-        free(data_read);
-        data_read = NULL;
+        line = ft_strdup(data);
+        free(data);
+        data = NULL;
     }
     return (line);
 }
@@ -146,3 +135,14 @@ int main()
 // }
 
 
+// int main()
+// {
+//     char *buff = NULL;
+//     int fd = open("test.txt", O_RDONLY);
+//     buff = ft_read(fd, buff);
+//     printf("%s", buff);
+//     free(buff);
+//     close(fd);
+
+//     return 0;
+// }
