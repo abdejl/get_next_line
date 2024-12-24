@@ -3,66 +3,95 @@
 #ifndef BUFFER_SIZE
 #define BUFFER_SIZE 42
 #endif
-char	*get_line(char *str)
-{
-	int	i;
 
-	i = 0;
-	while (str[i] != '\n')
-		i++;
-	return (ft_substr(str, 0, i + 1));
+char *ft_read(int fd, char *str)
+{
+    char *tmp_buff;
+    ssize_t num_of_bytes;
+
+    tmp_buff = (char *)malloc(BUFFER_SIZE + 1);
+    if (!tmp_buff)
+        return (NULL);
+    num_of_bytes = 1;
+    while (!ft_strchr(str, '\n') && num_of_bytes > 0)
+    {
+        num_of_bytes = read(fd, tmp_buff, BUFFER_SIZE);
+        if (num_of_bytes == -1)
+        {
+            free(tmp_buff);
+            return (NULL);
+        }
+        tmp_buff[num_of_bytes] = '\0';
+        str = ft_strjoin(str, tmp_buff);
+    }
+    free(tmp_buff);
+    return (str);
 }
 
-char	*get_rest(char *str)
+char *ft_remaining(char *str)
 {
-	int		i;
-	char	*ptr;
+    int i, j;
+    char *remaining;
 
-	i = 0;
-	while (str[i] != '\n')
-		i++;
-	ptr = ft_substr(str, i + 1, ft_strlen(str) - i);
-	free(str);
-	return (ptr);
+    i = 0;
+    while (str[i] && str[i] != '\n')
+        i++;
+    if (!str[i])
+    {
+        free(str);
+        return (NULL);
+    }
+    remaining = (char *)malloc(sizeof(char) * (ft_strlen(str) - i + 1));
+    if (!remaining)
+        return (NULL);
+    i++;
+    j = 0;
+    while (str[i])
+        remaining[j++] = str[i++];
+    remaining[j] = '\0';
+    free(str);
+    return (remaining);
 }
 
-int	newline(char *str)
+char *ft_new_line(char *str)
 {
-	if (!str)
-		return (0);
-	while (*str != '\0')
-	{
-		if (*str == '\n')
-			return (1);
-		str++;
-	}
-	return (0);
+    int i;
+    char *line;
+
+    i = 0;
+    if (!str[i])
+        return (NULL);
+    while (str[i] && str[i] != '\n')
+        i++;
+    line = (char *)malloc(i + 2);
+    if (!line)
+        return (NULL);
+    i = 0;
+    while (str[i] && str[i] != '\n')
+    {
+        line[i] = str[i];
+        i++;
+    }
+    if (str[i] == '\n')
+    {
+        line[i] = str[i];
+        i++;
+    }
+    line[i] = '\0';
+    return (line);
 }
 
-char	*get_next_line(int fd)
+char *get_next_line(int fd)
 {
-	int			k;
-	char		*ln;
-	static char	*rs[1024];
-	char		*bf;
+    static char *data_read[OPEN_MAX];
+    char *line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	bf = malloc(sizeof(char) * BUFFER_SIZE + 1);
-	if (!bf)
-		return (NULL);
-	if (newline(rs[fd]))
-		return (ln = get_line(rs[fd]), rs[fd] = get_rest(rs[fd]), free(bf), ln);
-	k = read(fd, bf, BUFFER_SIZE);
-	if (k <= 0)
-	{
-		if (!rs[fd])
-			return (free(bf), NULL);
-		if (!*rs[fd])
-			return (free(rs[fd]), free(bf), rs[fd] = NULL, NULL);
-		ln = ft_strdup(rs[fd]);
-		return (free(rs[fd]), free(bf), rs[fd] = NULL, ln);
-	}
-	bf[k] = '\0';
-	return (rs[fd] = ft_strjoin(rs[fd], bf), free(bf), get_next_line(fd));
+    if (fd < 0 || BUFFER_SIZE <= 0)
+        return (NULL);
+    data_read[fd] = ft_read(fd, data_read[fd]);
+    if (!data_read[fd])
+        return (NULL);
+    line = ft_new_line(data_read[fd]);
+    data_read[fd] = ft_remaining(data_read[fd]);
+    return (line);
 }

@@ -11,75 +11,96 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#ifndef BUFFER_SIZE
-#define BUFFER_SIZE 42
-#endif
 
-
-char	*get_line(char *str)
+char *ft_new_line(char *str)
 {
-	int	i;
+    char *line;
+    int i;
 
-	i = 0;
-	while (str[i] != '\n')
-		i++;
-	return (ft_substr(str, 0, i + 1));
+    i = 0;
+    if (*str == 0)
+        return (NULL);
+    while (str[i] && str[i] != '\n')
+        i++;
+    if (str[i] == '\n')
+        i++;
+    line = (char *)malloc(i + 1 * sizeof(char));
+    if (!line)
+        return (line);
+    i = 0;
+    while (str[i] && str[i] != '\n')
+    {
+        line[i] = str[i];
+        i++;
+    }
+    if (str[i] == '\n')
+        line[i++] = '\n';
+    line[i] = '\0';
+    return (line);
 }
 
-char	*get_rest(char *str)
+char *ft_remaining(char *str)
 {
-	int		i;
-	char	*ptr;
+    char *remaining;
+    int i;
+    int j;
 
-	i = 0;
-	while (str[i] != '\n')
-		i++;
-	ptr = ft_substr(str, i + 1, ft_strlen(str) - i);
-	free(str);
-	return (ptr);
+    i = 0;
+    while (str[i] && str[i] != '\n')
+        i++;
+    if (str[i] == '\0')
+        return (free(str), NULL);
+    remaining = (char *)malloc((ft_strlen(str) - i + 1) * sizeof(char));
+    if (!remaining)
+        return (remaining);
+    i++;
+    j = 0;
+    while (str[i])
+    {
+        remaining[j] = str[i];
+        i++;
+        j++;
+    }
+    remaining[j] = '\0';
+    return (free(str), remaining);
 }
 
-int	newline(char *str)
+char *ft_read(int fd, char *str)
 {
-	if (!str)
-		return (0);
-	while (*str != '\0')
-	{
-		if (*str == '\n')
-			return (1);
-		str++;
-	}
-	return (0);
+    char *tmp_buff;
+    int num_of_bytes;
+
+    tmp_buff = malloc(BUFFER_SIZE + 1 * sizeof(char));
+    if (!tmp_buff)
+        return (tmp_buff);
+    num_of_bytes = 1;
+    while (!ft_strchr(str, '\n') && num_of_bytes != 0)
+    {
+        num_of_bytes = read(fd, tmp_buff, BUFFER_SIZE);
+        if (num_of_bytes == -1)
+            return (free(tmp_buff), free(str), NULL);
+        tmp_buff[num_of_bytes] = '\0';
+        str = ft_strjoin(str, tmp_buff);
+    }
+    return (free(tmp_buff), str);
 }
 
-
-char	*get_next_line(int fd)
+char *get_next_line(int fd)
 {
-	int			k;
-	char		*line;
-	static char	*remain;
-	char		*buff;
+    static char *data_read;
+    char *line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	buff = malloc(BUFFER_SIZE + 1);
-	if (!buff)
-		return (NULL);
-	if (newline(remain))
-		return (line = get_line(remain), remain = get_rest(remain), free(buff), line);
-	k = read(fd, buff, BUFFER_SIZE);
-	if (k <= 0)
-	{
-		if (!remain)
-			return (free(buff), NULL);
-		if (!*remain)
-			return (free(buff), free(remain), remain = NULL, NULL);
-		line = ft_strdup(remain);
-		return (free(remain), free(buff), remain = NULL, line);
-	}
-	buff[k] = '\0';
-	return (remain = ft_strjoin(remain, buff), free(buff), get_next_line(fd));
+    if (fd < 0 || fd == 1 || fd == 2 || BUFFER_SIZE <= 0)
+        return (NULL);
+    line = 0;
+    data_read = ft_read(fd, data_read);
+    if (!data_read)
+        return (data_read);
+    line = ft_new_line(data_read);
+    data_read = ft_remaining(data_read);
+    return (line);
 }
+
 
 
 // #include <stdio.h>
@@ -101,8 +122,8 @@ char	*get_next_line(int fd)
 // int main()
 // {
 //     char str[] = "hellooo\njgflkjjhg\nskldjks\n1234";
-//     printf("%s", ft_new_line(str));
-//     printf("%s", ft_remaining(str));
+//     printf("%s", get_sv_and_fr(str));
+// //     printf("%s", ft_remaining(str));
 // }
 
 
