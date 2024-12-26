@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: abjellal <abjellal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/08 10:02:23 by abjellal          #+#    #+#             */
-/*   Updated: 2024/12/14 09:44:49 by abjellal         ###   ########.fr       */
+/*   Created: 2024/12/11 10:02:23 by abjellal          #+#    #+#             */
+/*   Updated: 2024/12/26 10:33:21 by abjellal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*ft_strchr(char *s, int c)
 
 	if (!s)
 		return (s);
-	if ((unsigned char )c == 0)
+	if ((unsigned char)c == 0)
 		return ((char *)s + ft_strlen(s));
 	i = -1;
 	while (*(s + (++i)))
@@ -52,7 +52,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	}
 	if (!s2)
 		return (s2);
-	str = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1 * sizeof(char));
+	str = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!str)
 		return (free(str), str = NULL, str);
 	i = -1;
@@ -60,7 +60,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		str[i] = s1[i];
 	j = -1;
 	while (s2[++j])
-		str [i + j] = s2[j];
-	str [i + j] = '\0';
+		str[i + j] = s2[j];
+	str[i + j] = '\0';
 	return (free(s1), str);
 }

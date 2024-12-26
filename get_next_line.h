@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: abjellal <abjellal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/08 09:59:38 by abjellal          #+#    #+#             */
-/*   Updated: 2024/12/14 09:45:11 by abjellal         ###   ########.fr       */
+/*   Created: 2024/12/11 09:59:38 by abjellal          #+#    #+#             */
+/*   Updated: 2024/12/26 10:33:35 by abjellal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,18 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
-# include <stdio.h>
-#include <limits.h>
+# include <limits.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 10
 # endif
 
-// int		ft_strlen(char *s);
-// char	*ft_strchr(char *s, int c);
-// char	*ft_strjoin_l(char *s1, char *s2);
-// char	*get_ln(char *backup);
-// char	*read_ln(int fd, char *backup);
-// char	*get_sv_and_fr(char *backup);
-// char	*get_next_line(int fd);
-
-int     ft_strlen(char *str);
-char    *ft_strchr(char *str, int c);
-char    *ft_strjoin(char *str1, char *str2);
-char    *ft_new_line(char *str);
-char    *ft_read(int fd, char *str);
-char    *ft_remaining(char *str);
-char    *get_next_line(int fd);
+int		ft_strlen(char *str);
+char	*ft_strchr(char *str, int c);
+char	*ft_strjoin(char *str1, char *str2);
+char	*ft_new_line(char *str);
+char	*ft_read(int fd, char *str);
+char	*ft_remaining(char *str);
+char	*get_next_line(int fd);
 
 #endif
