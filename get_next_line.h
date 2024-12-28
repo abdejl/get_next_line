@@ -6,7 +6,7 @@
 /*   By: abjellal <abjellal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 09:59:38 by abjellal          #+#    #+#             */
-/*   Updated: 2024/12/26 10:33:35 by abjellal         ###   ########.fr       */
+/*   Updated: 2024/12/28 10:36:00 by abjellal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <limits.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 2147483647
 # endif
 
 int		ft_strlen(char *str);

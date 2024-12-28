@@ -12,7 +12,7 @@
 
 #include "get_next_line_bonus.h"
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 1024
+# define BUFFER_SIZE 2147483647
 #endif
 
 char	*ft_read(int fd, char *str)
@@ -20,13 +20,13 @@ char	*ft_read(int fd, char *str)
 	char	*tmp_buff;
 	ssize_t	num_of_bytes;
 
-	tmp_buff = (char *)malloc(BUFFER_SIZE + 1);
+	tmp_buff = (char *)malloc((size_t)BUFFER_SIZE + 1);
 	if (!tmp_buff)
 		return (NULL);
 	num_of_bytes = 1;
 	while (!ft_strchr(str, '\n') && num_of_bytes > 0)
 	{
-		num_of_bytes = read(fd, tmp_buff, (size_t)BUFFER_SIZE);
+		num_of_bytes = read(fd, tmp_buff, BUFFER_SIZE);
 		if (num_of_bytes == -1)
 		{
 			free(tmp_buff);
@@ -108,18 +108,26 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-// int main()
-// {
-//     char *buff;
-//     int fd = open("test.txt", O_CREAT | O_RDWR, 0777);
-//     int fd1 = open("test1.txt", O_CREAT | O_RDWR, 0777);
-//     if (fd < 0)
-//         return (1);
+// #include<stdio.h>
+// #include<fcntl.h>
 
-//     while ((buff = get_next_line(fd)) != NULL)
-//     {
-//         printf("%s", buff);
-//         free(buff);
-//     }
-//     close(fd);
-// }
+int main()
+{
+	int fd = open("test.txt", O_RDONLY);
+	int fd1 = open("test1.txt", O_RDONLY);
+	char *line;
+	char *line1;
+	while(1)
+	{
+		line = get_next_line(fd);
+		line1 = get_next_line(fd1);
+		if (line == NULL || line1 == NULL)
+			break;
+		printf("file1-> %s", line);
+		printf("file2-> %s", line1);
+		free(line);
+		free(line1);
+	}
+	close(fd);
+	close(fd1);
+}

@@ -6,7 +6,7 @@
 /*   By: abjellal <abjellal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 12:02:15 by abjellal          #+#    #+#             */
-/*   Updated: 2024/12/26 10:32:41 by abjellal         ###   ########.fr       */
+/*   Updated: 2024/12/28 10:52:29 by abjellal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,13 @@ char	*ft_read(int fd, char *str)
 	char	*tmp_buff;
 	int		num_of_bytes;
 
-	tmp_buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	tmp_buff = malloc(((size_t)BUFFER_SIZE + 1) * sizeof(char));
 	if (!tmp_buff)
 		return (NULL);
 	num_of_bytes = 1;
 	while (!ft_strchr(str, '\n') && num_of_bytes != 0)
 	{
-		num_of_bytes = read(fd, tmp_buff, (size_t)BUFFER_SIZE);
+		num_of_bytes = read(fd, tmp_buff, BUFFER_SIZE);
 		if (num_of_bytes == -1)
 			return (free(tmp_buff), free(str), NULL);
 		tmp_buff[num_of_bytes] = '\0';
@@ -100,36 +100,20 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-// #include <stdio.h>
-// int main()
-// {
-//     char *buff;
-//     int fd = open("test.txt", O_CREAT | O_RDWR, 0777);
-//     if (fd < 0)
-//         return (1);
-//     while ((buff = get_next_line(fd)) != NULL)
-//     {
-//         printf("%s", buff);
-//         free(buff);
-//     }
-//     close(fd);
-// }
+#include<stdio.h>
+#include<fcntl.h>
 
-// int main()
-// {
-//     char str[] = "hellooo\njgflkjjhg\nskldjks\n1234";
-//     printf("%s", get_sv_and_fr(str));
-// //     printf("%s", ft_remaining(str));
-// }
-
-// int main()
-// {
-//     char *buff = NULL;
-//     int fd = open("test.txt", O_RDONLY);
-//     buff = ft_read(fd, buff);
-//     printf("%s", buff);
-//     free(buff);
-//     close(fd);
-
-//     return 0;
-// }
+int main()
+{
+	int fd = open("test.txt", O_RDONLY);
+	char *line;
+	while(1)
+	{
+		line = get_next_line(fd);
+		if (line == NULL)
+			break;
+		printf("%s", line);
+		free(line);
+	}
+	close (fd);
+}
