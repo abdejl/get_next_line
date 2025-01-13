@@ -12,7 +12,7 @@
 
 #include "get_next_line_bonus.h"
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 2147483647
+# define BUFFER_SIZE 1024
 #endif
 
 char	*ft_read(int fd, char *str)
@@ -53,7 +53,7 @@ char	*ft_remaining(char *str)
 		free(str);
 		return (NULL);
 	}
-	remaining = (char *)malloc(sizeof(char) * (ft_strlen(str) - i + 1));
+	remaining = (char *)malloc((ft_strlen(str) - i + 1));
 	if (!remaining)
 		return (NULL);
 	i++;
@@ -106,28 +106,4 @@ char	*get_next_line(int fd)
 	line = ft_new_line(data_read[fd]);
 	data_read[fd] = ft_remaining(data_read[fd]);
 	return (line);
-}
-
-// #include<stdio.h>
-// #include<fcntl.h>
-
-int main()
-{
-	int fd = open("test.txt", O_RDONLY);
-	int fd1 = open("test1.txt", O_RDONLY);
-	char *line;
-	char *line1;
-	while(1)
-	{
-		line = get_next_line(fd);
-		line1 = get_next_line(fd1);
-		if (line == NULL || line1 == NULL)
-			break;
-		printf("file1-> %s", line);
-		printf("file2-> %s", line1);
-		free(line);
-		free(line1);
-	}
-	close(fd);
-	close(fd1);
 }

@@ -13,11 +13,8 @@
 #ifndef GET_NEXT_LINE_BONUS_H
 # define GET_NEXT_LINE_BONUS_H
 # include <stdlib.h>
-# include <fcntl.h>
 # include <stddef.h>
-# include <stdio.h>
 # include <unistd.h>
-# include <limits.h>
 
 # ifndef OPEN_MAX
 #  define OPEN_MAX 1024

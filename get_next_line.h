@@ -6,7 +6,7 @@
 /*   By: abjellal <abjellal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 09:59:38 by abjellal          #+#    #+#             */
-/*   Updated: 2024/12/28 10:36:00 by abjellal         ###   ########.fr       */
+/*   Updated: 2024/12/30 13:48:29 by abjellal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,10 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-# include <fcntl.h>
-# include <limits.h>
+# include <stddef.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 2147483647
+#  define BUFFER_SIZE 42
 # endif
 
 int		ft_strlen(char *str);
