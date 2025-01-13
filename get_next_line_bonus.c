@@ -107,3 +107,27 @@ char	*get_next_line(int fd)
 	data_read[fd] = ft_remaining(data_read[fd]);
 	return (line);
 }
+
+// #include<stdio.h>
+// #include<fcntl.h>
+
+// int main()
+// {
+// 	int fd = open("test.txt", O_RDONLY);
+// 	int fd1 = open("test1.txt", O_RDONLY);
+// 	char *line;
+// 	char *line1;
+// 	while(1)
+// 	{
+// 		line = get_next_line(fd);
+// 		line1 = get_next_line(fd1);
+// 		if (line == NULL || line1 == NULL)
+// 			break;
+// 		printf("file1-> %s", line);
+// 		printf("file2-> %s", line1);
+// 		free(line);
+// 		free(line1);
+// 	}
+// 	close(fd);
+// 	close(fd1);
+// }
