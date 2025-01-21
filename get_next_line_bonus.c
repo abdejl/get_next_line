@@ -15,56 +15,6 @@
 # define BUFFER_SIZE 1024
 #endif
 
-char	*ft_read(int fd, char *str)
-{
-	char	*tmp_buff;
-	ssize_t	num_of_bytes;
-
-	tmp_buff = (char *)malloc((size_t)BUFFER_SIZE + 1);
-	if (!tmp_buff)
-		return (NULL);
-	num_of_bytes = 1;
-	while (!ft_strchr(str, '\n') && num_of_bytes > 0)
-	{
-		num_of_bytes = read(fd, tmp_buff, BUFFER_SIZE);
-		if (num_of_bytes == -1)
-		{
-			free(tmp_buff);
-			return (NULL);
-		}
-		tmp_buff[num_of_bytes] = '\0';
-		str = ft_strjoin(str, tmp_buff);
-	}
-	free(tmp_buff);
-	return (str);
-}
-
-char	*ft_remaining(char *str)
-{
-	int		i;
-	int		j;
-	char	*remaining;
-
-	i = 0;
-	while (str[i] && str[i] != '\n')
-		i++;
-	if (!str[i])
-	{
-		free(str);
-		return (NULL);
-	}
-	remaining = (char *)malloc((ft_strlen(str) - i + 1));
-	if (!remaining)
-		return (NULL);
-	i++;
-	j = 0;
-	while (str[i])
-		remaining[j++] = str[i++];
-	remaining[j] = '\0';
-	free(str);
-	return (remaining);
-}
-
 char	*ft_new_line(char *str)
 {
 	int		i;
@@ -93,6 +43,56 @@ char	*ft_new_line(char *str)
 	return (line);
 }
 
+char	*ft_remaining(char *str)
+{
+	int		i;
+	int		j;
+	char	*remaining;
+
+	i = 0;
+	while (str[i] && str[i] != '\n')
+		i++;
+	if (!str[i])
+	{
+		free(str);
+		return (NULL);
+	}
+	remaining = (char *)malloc((ft_strlen(str) - i + 1));
+	if (!remaining)
+		return (NULL);
+	i++;
+	j = 0;
+	while (str[i])
+		remaining[j++] = str[i++];
+	remaining[j] = '\0';
+	free(str);
+	return (remaining);
+}
+
+char	*ft_read(int fd, char *str)
+{
+	char	*tmp_buff;
+	ssize_t	num_of_bytes;
+
+	tmp_buff = (char *)malloc((size_t)BUFFER_SIZE + 1);
+	if (!tmp_buff)
+		return (NULL);
+	num_of_bytes = 1;
+	while (!ft_strchr(str, '\n') && num_of_bytes > 0)
+	{
+		num_of_bytes = read(fd, tmp_buff, BUFFER_SIZE);
+		if (num_of_bytes == -1)
+		{
+			free(tmp_buff);
+			return (NULL);
+		}
+		tmp_buff[num_of_bytes] = '\0';
+		str = ft_strjoin(str, tmp_buff);
+	}
+	free(tmp_buff);
+	return (str);
+}
+
 char	*get_next_line(int fd)
 {
 	static char	*data_read[OPEN_MAX];
@@ -107,27 +107,3 @@ char	*get_next_line(int fd)
 	data_read[fd] = ft_remaining(data_read[fd]);
 	return (line);
 }
-
-// #include<stdio.h>
-// #include<fcntl.h>
-
-// int main()
-// {
-// 	int fd = open("test.txt", O_RDONLY);
-// 	int fd1 = open("test1.txt", O_RDONLY);
-// 	char *line;
-// 	char *line1;
-// 	while(1)
-// 	{
-// 		line = get_next_line(fd);
-// 		line1 = get_next_line(fd1);
-// 		if (line == NULL || line1 == NULL)
-// 			break;
-// 		printf("file1-> %s", line);
-// 		printf("file2-> %s", line1);
-// 		free(line);
-// 		free(line1);
-// 	}
-// 	close(fd);
-// 	close(fd1);
-// }

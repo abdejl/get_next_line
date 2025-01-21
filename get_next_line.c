@@ -6,7 +6,7 @@
 /*   By: abjellal <abjellal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 12:02:15 by abjellal          #+#    #+#             */
-/*   Updated: 2025/01/13 22:18:19 by abjellal         ###   ########.fr       */
+/*   Updated: 2025/01/21 15:22:23 by abjellal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,20 +99,3 @@ char	*get_next_line(int fd)
 	data_read = ft_remaining(data_read);
 	return (line);
 }
-// #include<stdio.h>
-// #include<fcntl.h>
-
-// int main()
-// {
-// 	int fd = open("test.txt", O_RDONLY);
-// 	char *line;
-// 	while(1)
-// 	{
-// 		line = get_next_line(fd);
-// 		if (line == NULL)
-// 			break;
-// 		printf("%s", line);
-// 		free(line);
-// 	}
-// 	close (fd);
-// }
