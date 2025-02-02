@@ -90,7 +90,7 @@ char	*get_next_line(int fd)
 	static char	*data_read;
 	char		*line;
 
-	if (fd < 0 || fd == 1 || fd == 2 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	data_read = ft_read(fd, data_read);
 	if (!data_read)
