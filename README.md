@@ -1,8 +1,5 @@
 # get_next_line (42 School Project)
 
-<p align="center">
-  <img src="https://github.com/42-world/42-badges/blob/main/badges/get_next_line_full.png" alt="42 get_next_line Project Badge" width="400" />
-</p>
 
 <p align="center">
   <strong>A C function that reads a file line by line.</strong>
@@ -101,15 +98,6 @@ int main(void)
 }
 ```
 
-# Compile the main.c and link it with the get_next_line library
-# This command assumes 'make' created libgetnextline.a
-gcc main.c -L. -lgetnextline -o test_gnl
-
-# Create a test file
-echo "Hello World\nLine 2\nLast line" > test.txt
-
-# Run the test
-./test_gnl
 
 # Compile the main.c and link it with the get_next_line library
 # This command assumes 'make' created libgetnextline.a
