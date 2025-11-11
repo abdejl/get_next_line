@@ -99,6 +99,7 @@ int main(void)
     close(fd);
     return (0);
 }
+```
 
 # Compile the main.c and link it with the get_next_line library
 # This command assumes 'make' created libgetnextline.a
